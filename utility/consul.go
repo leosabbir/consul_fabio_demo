@@ -162,9 +162,6 @@ func (c *client) Services(service, tag string) ([]*consul.ServiceEntry, *consul.
 func GetConsulAddress() string {
 	consulHTTPAddr := os.Getenv(consul.HTTPAddrEnvName)
 	if consulHTTPAddr == "" {
-		return fmt.Sprintf("%s:8500", localIPAddress)
-	}
-	if consulHTTPAddr == "" {
 		return DefaultConsulHTTPAddr
 	}
 	return consulHTTPAddr
