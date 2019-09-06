@@ -1,0 +1,55 @@
+1. INSTALLATION OF CONSUL
+
+cd /usr/local/bin
+sudo wget https://releases.hashicorp.com/consul/1.5.0/consul_1.5.0_linux_amd64.zip
+sudo apt install unzip
+sudo unzip consul_1.5.0_linux_amd64.zip
+sudo rm consul_1.5.0_linux_amd64.zip
+
+2. RUN CONSUL AS SERVER
+cd ~
+mkdir -p consul-config/server/
+vim consul-config/server/config.json
+    {
+        "bootstrap": true,
+        "server":true,
+        "log_level": "DEBUG",
+        "enable_syslog": true,
+        "enable_script_checks": true,
+        "datacenter": "dc1",
+        "addresses": {
+                "http": "0.0.0.0"
+        },
+        "bind_addr": "172.31.17.96", // private IP
+        "node_name": "ConsulServer",
+        "data_dir": "~/consul-data",
+        "ui_dir": "~/consul-ui",
+        "acl_datacenter": "dc1",
+        "acl_master_token": "123456789",
+        "acl_default_policy": "allow",
+        "encrypt": "pXoaLOJ816mO+da8y8zrsg=="
+    }
+
+cd ~
+mkdir consul-data
+sudo consul agent -config-dir ~/consul-config/server -ui
+
+3. RUN CONSUL AS CLIENT
+cd ~
+mkdir consul-data
+sudo consul agent -data-dir=consul-data -bind=172.31.39.98 -join=172.31.17.96 -encrypt=pXoaLOJ816mO+da8y8zrsg==
+  - bind = host private IP
+  - join = ip of host where consul server is running
+
+
+4. FABIO INSTALLATION
+
+Reference: https://github.com/fabiolb/fabio/wiki/Installation
+
+go get github.com/fabiolb/fabio 
+./fabio
+
+5. RUN User Service
+6. Run Storage Service
+
+7. Access from gateway
