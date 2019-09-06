@@ -22,6 +22,7 @@ func main() {
 	(*c).Register("UserService", 8890, &tags)
 
 	router := mux.NewRouter()
+	router.HandleFunc("/health", health).Methods(http.MethodGet)
 	router.HandleFunc("/service/user/{email}", getUser).Methods(http.MethodGet)
 	router.HandleFunc("/service/user", createUser).Methods(http.MethodPost)
 	router.HandleFunc("/service/user/{email}", deleteUser).Methods(http.MethodDelete)
@@ -29,6 +30,10 @@ func main() {
 	router.HandleFunc("/service/users", getUsers).Methods(http.MethodGet)
 
 	log.Fatal(http.ListenAndServe(":8890", router))
+}
+
+func health(w http.ResponseWriter, r *http.Request) {
+	return
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {

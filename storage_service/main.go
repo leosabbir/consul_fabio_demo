@@ -33,6 +33,7 @@ func main() {
 	(*c).Register("StorageService", 8891, &tags)
 
 	router := mux.NewRouter()
+	router.HandleFunc("/health", health).Methods(http.MethodGet)
 	router.HandleFunc("/storage/user/{email}", getUser).Methods(http.MethodGet)
 	router.HandleFunc("/storage/user", createUser).Methods(http.MethodPost)
 	router.HandleFunc("/storage/user/{email}", deleteUser).Methods(http.MethodDelete)
@@ -40,6 +41,10 @@ func main() {
 	router.HandleFunc("/storage/users", getUsers).Methods(http.MethodGet)
 
 	log.Fatal(http.ListenAndServe(":8891", router))
+}
+
+func health(w http.ResponseWriter, r *http.Request) {
+	return
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
