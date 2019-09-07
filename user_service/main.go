@@ -52,13 +52,14 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func createUser(w http.ResponseWriter, r *http.Request) {
-	log.Println("Request to create user")
-	email := r.FormValue("email")
-	fname := r.FormValue("fname")
-	lname := r.FormValue("lname")
-	org := r.FormValue("organization")
-	title := r.FormValue("title")
-	address := r.FormValue("address")
+	r.ParseForm()
+	email := r.PostForm.Get("email")
+	fname := r.PostForm.Get("fname")
+	lname := r.PostForm.Get("lname")
+	org := r.PostForm.Get("organization")
+	title := r.PostForm.Get("title")
+	address := r.PostForm.Get("address")
+	log.Printf("Request to create user %s %s %s %s %s %s\n", email, fname, lname, org, title, address)
 
 	data := url.Values{}
 	data.Set("email", email)
@@ -68,7 +69,10 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	data.Set("title", title)
 	data.Set("address", address)
 
-	res, code, err := utility.SendRequest(fabiopath+"/storage/user", http.MethodPost, strings.NewReader(data.Encode()), nil)
+	header := http.Header{}
+	header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	res, code, err := utility.SendRequest(fabiopath+"/storage/user", http.MethodPost, strings.NewReader(data.Encode()), &header)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err.Error())
