@@ -40,7 +40,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	email := params["email"]
 
-	res, code, err := utility.SendRequest(fabiopath+"/user/"+email, http.MethodGet, nil, nil)
+	res, code, err := utility.SendRequest(fabiopath+"/storage/user/"+email, http.MethodGet, nil, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err.Error())
@@ -66,7 +66,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	data.Set("title", title)
 	data.Set("address", address)
 
-	res, code, err := utility.SendRequest(fabiopath+"/user/", http.MethodPost, strings.NewReader(data.Encode()), nil)
+	res, code, err := utility.SendRequest(fabiopath+"/storage/user/", http.MethodPost, strings.NewReader(data.Encode()), nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err.Error())
@@ -80,7 +80,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	email := params["email"]
 
-	res, code, err := utility.SendRequest(fabiopath+"/user/"+email, http.MethodDelete, nil, nil)
+	res, code, err := utility.SendRequest(fabiopath+"/storage/user/"+email, http.MethodDelete, nil, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err.Error())
@@ -94,7 +94,7 @@ func getOrgUsers(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	org := params["org"]
 
-	res, code, err := utility.SendRequest(fabiopath+"/user/org/"+org, http.MethodGet, nil, nil)
+	res, code, err := utility.SendRequest(fabiopath+"/storage/user/org/"+org, http.MethodGet, nil, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err.Error())
@@ -105,7 +105,7 @@ func getOrgUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
-	res, code, err := utility.SendRequest(fabiopath+"/users", http.MethodGet, nil, nil)
+	res, code, err := utility.SendRequest(fabiopath+"/storage/users", http.MethodGet, nil, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err.Error())

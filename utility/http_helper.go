@@ -4,9 +4,8 @@ package utility
 import (
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
-
-	log "github.com/sirupsen/logrus"
 )
 
 //---------------------------------------------------------------------------------------
@@ -32,7 +31,7 @@ func Request(url, method string, requestBody io.Reader, headers *http.Header) (*
 	// Create Request
 	req, err := http.NewRequest(method, url, requestBody)
 	if err != nil {
-		log.Errorf("Error in creating request object: %v", err)
+		log.Fatalf("Error in creating request object: %v", err)
 		return nil, err
 	}
 	if headers != nil {
@@ -54,7 +53,7 @@ func SendRequest(url, method string, requestBody io.Reader, headers *http.Header
 	// Fetch Request
 	resp, err := httpClient.Do(req)
 	if err != nil {
-		log.Errorf("Error in sending request to %s : %v", url, err)
+		log.Fatalf("Error in sending request to %s : %v", url, err)
 		var statusCode = http.StatusBadRequest
 		return nil, statusCode, err
 	}
@@ -63,7 +62,7 @@ func SendRequest(url, method string, requestBody io.Reader, headers *http.Header
 	// Read Response Body
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Errorf("Error reading response body. URL: %s. Error: %v", url, err)
+		log.Fatalf("Error reading response body. URL: %s. Error: %v", url, err)
 		return nil, http.StatusInternalServerError, err
 	}
 	return &respBody, resp.StatusCode, nil
