@@ -12,12 +12,12 @@ import (
 )
 
 type userDetail struct {
-	email   string
-	fname   string
-	lname   string
-	org     string
-	title   string
-	address string
+	Email   string `json:"email,omitempty"`
+	Fname   string `json:"firstname,omitempty"`
+	Lname   string `json:"lastname,omitempty"`
+	Org     string `json:"organization,omitempty"`
+	Title   string `json:"title,omitempty"`
+	Address string `json:"address,omitempty"`
 }
 
 var emailMap map[string]userDetail
@@ -79,15 +79,16 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userDetail := userDetail{
-		email:   email,
-		fname:   fname,
-		lname:   lname,
-		org:     org,
-		title:   title,
-		address: address,
+		Email:   email,
+		Fname:   fname,
+		Lname:   lname,
+		Org:     org,
+		Title:   title,
+		Address: address,
 	}
 
 	user, _ := json.Marshal(userDetail)
+	emailMap[email] = userDetail
 	fmt.Fprintf(w, "User created successfully %s", user)
 }
 
@@ -114,7 +115,7 @@ func getOrgUsers(w http.ResponseWriter, r *http.Request) {
 	users := make([]string, 0)
 
 	for _, user := range emailMap {
-		if org == user.org {
+		if org == user.Org {
 			userStr, _ := json.Marshal(user)
 			users = append(users, string(userStr))
 		}
