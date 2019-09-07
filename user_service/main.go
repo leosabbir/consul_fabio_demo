@@ -37,6 +37,7 @@ func health(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
+	log.Println("Requeset for user info")
 	params := mux.Vars(r)
 	email := params["email"]
 
@@ -51,6 +52,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func createUser(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request to create user")
 	email := r.FormValue("email")
 	fname := r.FormValue("fname")
 	lname := r.FormValue("lname")
@@ -77,6 +79,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteUser(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request to delete user")
 	params := mux.Vars(r)
 	email := params["email"]
 
@@ -91,6 +94,7 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func getOrgUsers(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request to get organization users")
 	params := mux.Vars(r)
 	org := params["org"]
 
@@ -105,6 +109,7 @@ func getOrgUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request to get all users")
 	res, code, err := utility.SendRequest(fabiopath+"/storage/users", http.MethodGet, nil, nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

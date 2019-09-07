@@ -48,6 +48,7 @@ func health(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUser(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request for user info")
 	params := mux.Vars(r)
 	email := params["email"]
 
@@ -55,12 +56,14 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	if !ok {
 		fmt.Fprintf(w, "user with email %s does not exist", email)
+		return
 	}
 	res, _ := json.Marshal(user)
 	fmt.Fprint(w, string(res))
 }
 
 func createUser(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request to create user")
 	email := r.FormValue("email")
 	fname := r.FormValue("fname")
 	lname := r.FormValue("lname")
@@ -89,6 +92,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteUser(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request to delete user")
 	params := mux.Vars(r)
 	email := params["email"]
 
@@ -96,12 +100,14 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	if !ok {
 		fmt.Fprintf(w, "user with email %s does not exist", email)
+		return
 	}
 	delete(emailMap, email)
 	fmt.Fprintf(w, "user with email %s deleted", email)
 }
 
 func getOrgUsers(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request for organization users")
 	params := mux.Vars(r)
 	org := params["org"]
 
@@ -120,6 +126,7 @@ func getOrgUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func getUsers(w http.ResponseWriter, r *http.Request) {
+	log.Println("Request of all users")
 	users := make([]string, 0)
 
 	for _, user := range emailMap {
