@@ -68,7 +68,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	data.Set("title", title)
 	data.Set("address", address)
 
-	res, code, err := utility.SendRequest(fabiopath+"/storage/user/", http.MethodPost, strings.NewReader(data.Encode()), nil)
+	res, code, err := utility.SendRequest(fabiopath+"/storage/user", http.MethodPost, strings.NewReader(data.Encode()), nil)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		fmt.Fprint(w, err.Error())
