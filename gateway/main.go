@@ -68,7 +68,7 @@ func choice() int {
 func getUser() {
 	fmt.Print("Enter email: ")
 	email, _ := reader.ReadString('\n')
-	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/user/%s", fabiopath, email), http.MethodGet, nil, nil)
+	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/service/user/%s", fabiopath, clean(email)), http.MethodGet, nil, nil)
 
 	fmt.Println(string(*res))
 }
@@ -88,21 +88,24 @@ func createUser() {
 	address, _ := reader.ReadString('\n')
 
 	data := url.Values{}
-	data.Set("email", email)
-	data.Set("fname", fname)
-	data.Set("lname", lname)
-	data.Set("org", org)
-	data.Set("title", title)
-	data.Set("address", address)
+	data.Set("email", clean(email))
+	data.Set("fname", clean(fname))
+	data.Set("lname", clean(lname))
+	data.Set("org", clean(org))
+	data.Set("title", clean(title))
+	data.Set("address", clean(address))
 
-	res, _, _ := utility.SendRequest(fabiopath+"/user/", http.MethodPost, strings.NewReader(data.Encode()), nil)
+	header := http.Header{}
+	header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	res, _, _ := utility.SendRequest(fabiopath+"/service/user", http.MethodPost, strings.NewReader(data.Encode()), &header)
 	fmt.Println(string(*res))
 }
 
 func deleteUser() {
 	fmt.Print("Enter email: ")
 	email, _ := reader.ReadString('\n')
-	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/user/%s", fabiopath, email), http.MethodDelete, nil, nil)
+	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/service/user/%s", fabiopath, clean(email)), http.MethodDelete, nil, nil)
 
 	fmt.Println(string(*res))
 }
@@ -110,12 +113,18 @@ func deleteUser() {
 func orgUsers() {
 	fmt.Print("Enter organization: ")
 	org, _ := reader.ReadString('\n')
-	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/user/org/%s", fabiopath, org), http.MethodGet, nil, nil)
+	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/service/user/org/%s", fabiopath, clean(org)), http.MethodGet, nil, nil)
 
 	fmt.Println(string(*res))
 }
 
 func users() {
-	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/users", fabiopath), http.MethodGet, nil, nil)
+	res, _, _ := utility.SendRequest(fmt.Sprintf("%s/service/users", fabiopath), http.MethodGet, nil, nil)
 	fmt.Println(string(*res))
+}
+
+func clean(in string) string {
+	in = strings.Replace(in, "\n", "", -1)
+	in = strings.Replace(in, "\r", "", -1)
+	return in
 }
