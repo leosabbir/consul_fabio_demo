@@ -65,7 +65,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 	data.Set("email", email)
 	data.Set("fname", fname)
 	data.Set("lname", lname)
-	data.Set("org", org)
+	data.Set("organization", org)
 	data.Set("title", title)
 	data.Set("address", address)
 

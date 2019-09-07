@@ -91,7 +91,7 @@ func createUser() {
 	data.Set("email", clean(email))
 	data.Set("fname", clean(fname))
 	data.Set("lname", clean(lname))
-	data.Set("org", clean(org))
+	data.Set("organization", clean(org))
 	data.Set("title", clean(title))
 	data.Set("address", clean(address))
 
